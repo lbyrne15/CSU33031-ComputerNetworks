@@ -24,17 +24,17 @@ while activeBroker == True:
     # Check the content of the message to determine its source
     if message.startswith(b"Sub"):
         # Message from a subscriber requesting to subscribe
-        subscriber_address, subscriber_port = address
-        subscribers[subscriber_address] = subscriber_port
-        print(f"Subscriber {subscriber_address}:{subscriber_port} has subscribed")
+        subscriberAddress, subscriberPort = address
+        subscribers[subscriberAddress] = subscriberPort
+        print(f"Subscriber {subscriberAddress}:{subscriberPort} has subscribed")
     else:
         # Message from a producer
         producerMsg = message[len(b"FromProducer:"):]
         print(f"Message from Producer: {producerMsg.decode('utf-8')}")
         
         # Forward the message to all subscribers
-        for subscriber_address, subscriber_port in subscribers.items():
-            UDPBrokerSocket.sendto(message, (subscriber_address, subscriber_port))
+        for subscriberAddress, subscriberPort in subscribers.items():
+            UDPBrokerSocket.sendto(message, (subscriberAddress, subscriberPort))
 
 # Close the socket (this part may not be reached in an infinite loop)
 UDPBrokerSocket.close()
